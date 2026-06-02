@@ -19,24 +19,11 @@ extern "C" {
 
 #include <stdint.h>
 
-#include <zephyr/drivers/gpio.h>
+int dw1000_spi_init();
 
-#define DECA_MAX_SPI_HEADER_LENGTH      (3)                     // max number of bytes in header (for formating & sizing)
+void dw1000_spi_speed_slow();
 
-/* DW1000 IRQ handler type. */
-typedef void (*port_deca_isr_t)(void);
-
-int dw1000_init(void);
-
-void dw1000_set_spi_slow(void);
-
-void dw1000_set_spi_fast(void);
-
-int dw1000_setup_gpios(void);
-
-void dw1000_reset(void);
-
-int port_set_deca_isr(port_deca_isr_t deca_isr);
+void dw1000_spi_speed_fast();
 
 /*! ------------------------------------------------------------------------------------------------------------------
  * @fn writetospi()
