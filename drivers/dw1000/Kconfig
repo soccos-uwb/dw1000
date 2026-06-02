@@ -1,9 +1,8 @@
 
 config DW1000
 	bool "DW1000 device driver"
-	default y
-	depends on DT_HAS_QORVO_DW1000_ENABLED
-	select SPI
-	select GPIO
+    default y
+    depends on DT_HAS_QORVO_DW1000_ENABLED
+    depends on SPI
 	help
-	  Enable DW1000 driver.
+		Enable support for "qorvo,dw1000" radio driver.
