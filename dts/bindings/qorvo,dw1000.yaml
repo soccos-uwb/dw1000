@@ -1,0 +1,26 @@
+description: Qorvo DW1000 on SPI bus
+
+compatible: "qorvo,dw1000"
+
+include: [spi-device.yaml]
+
+properties:
+    reset-gpios:
+      type: phandle-array
+      required: true
+      description: RESET pin
+
+    int-gpios:
+      type: phandle-array
+      required: true
+      description: IRQ pin
+
+    wakeup-gpios:
+      type: phandle-array
+      required: false
+      description: WAKEUP pin
+
+    exton-gpios:
+      type: phandle-array
+      required: false
+      description: EXTON pin
