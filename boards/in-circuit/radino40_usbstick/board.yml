@@ -1,6 +1,0 @@
-board:
-  name: radino40_usbstick
-  full_name: radino40 DW1000 USB-Stick
-  vendor: In-Circuit GmbH
-  socs:
-  - name: nrf52840
