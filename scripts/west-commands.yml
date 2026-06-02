@@ -1,6 +1,0 @@
-west-commands:
-  - file: scripts/build_all_samples.py
-    commands:
-      - name: build-all-samples
-        class: BuildAllSamples
-        help: Build all sample applications
