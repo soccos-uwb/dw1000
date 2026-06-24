@@ -58,7 +58,6 @@ static int spi_transceive_fast(const struct device *dev,
 		return ret;
 	}
 
-	nrfy_spim_enable(dev_data->spim.p_reg);
 	if (spi_cfg->cs.cs_is_gpio) {
 		gpio_pin_set_dt(&spi_cfg->cs.gpio, 1);
 	}
@@ -66,7 +65,8 @@ static int spi_transceive_fast(const struct device *dev,
     int maxcnt = 254;
     int buf_i = 0;
     int buf_off = 0;
-    
+    int non_first = 0;
+
     while (true)
     {
         nrfx_spim_xfer_desc_t xfer;
@@ -121,12 +121,11 @@ static int spi_transceive_fast(const struct device *dev,
         if (!delta && !next_buff)
             break;
         
-        
+        if (non_first)
+            while (!nrf_spim_event_check(dev_data->spim.p_reg, NRF_SPIM_EVENT_END));
         nrf_spim_event_clear(dev_data->spim.p_reg, NRF_SPIM_EVENT_END);
-
         nrfx_spim_xfer(&dev_data->spim, &xfer, NRFX_SPIM_FLAG_NO_XFER_EVT_HANDLER);
-
-        while (!nrf_spim_event_check(dev_data->spim.p_reg, NRF_SPIM_EVENT_END));
+        non_first = 1;
 
         if (next_buff)
         {
@@ -140,10 +139,13 @@ static int spi_transceive_fast(const struct device *dev,
 
     }
 
+    if (non_first)
+        while (!nrf_spim_event_check(dev_data->spim.p_reg, NRF_SPIM_EVENT_END))
+        {}
+
 	if (spi_cfg->cs.cs_is_gpio) {
 	    gpio_pin_set_dt(&spi_cfg->cs.gpio, 0);
     }
-	nrfy_spim_disable(dev_data->spim.p_reg);
 
 	pm_device_runtime_put(dev);
 	return ret;
